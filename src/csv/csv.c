@@ -8,7 +8,7 @@ void init_csv()
 {
     FILE *f;
 
-    f = fopen("dados.csv", "w");
+    f = fopen("log_temperature_system.csv", "w");
     fprintf(f, "Data/Hora, TI, TE, TR, Intensidade\n");
     fclose(f);
 }
@@ -24,6 +24,6 @@ void save_csv(float TI, double TE, float TR, double control_signal)
 
     strftime(datetime, 80, "%d/%m/%Y %H:%M:%S", info);
 
-    fprintf(f, "%s, %f, %lf, %f, %lf\n", datetime, TI, TE, TR, control_signa);
+    fprintf(f, "%s, %f, %lf, %f, %lf\n", datetime, TI, TE, TR, control_signal);
     fclose(f);
 }

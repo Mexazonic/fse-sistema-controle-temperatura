@@ -14,6 +14,9 @@ struct termios options; // uart options
 typedef struct  {
     float TI, TR, TE;
     int signal_key;
+    float hysteresis;
+    int control_option; // onoff || PID
+    double KP, KI, KD;
 } control_vars;
 
 int init_modbus();
