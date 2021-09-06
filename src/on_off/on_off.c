@@ -22,5 +22,7 @@ double on_off_control(float temp_output){
 		return sinal_de_controle_MAX;
 	} else if(temp_output > temp_ref + range) {
 		return sinal_de_controle_MIN;
+	} else {
+		return 0;
 	}
 }

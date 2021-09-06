@@ -3,12 +3,15 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdint.h>
+#include <sys/types.h>
+#include <signal.h>
 
 #include "sensorBME280/bme280.h"
 #include "driver_lcd_16x2/lcd.h"
 #include "uart_modbus/uart_modbus.h"
 #include "PID/pid.h"
 #include "gpio/gpio.h"
+#include "csv/csv.h"
 //#include "control_menu/menu.h"
 
 // delay between samples in microseconds
@@ -23,9 +26,13 @@ void close_connections();
 
 int main(int argc, char *argv[])
 {
+	/* Treat SIGINT */
+	signal(SIGINT, close_connections);
+	
 	/* Vars */
 	control_vars params;
     double control_value = 0;
+	int intensity_pwm;
 
 	/* Initial Setup */
 	init_setup();
@@ -34,11 +41,11 @@ int main(int argc, char *argv[])
 	// menu();
 
 	/* System loop */
-	for (int i=0; i<20; i++) // read values twice a second for 1 minute
+	for (int i=0; i<50; i++) // read values twice a second for 1 minute
 	{	
 		// BME280
 		bme280ReadValues(&T, &P, &H);
-		T -= 150; 
+		T -= 150;
 		params.TE = (float)T/100.0;
 
 		/* UART */
@@ -64,12 +71,18 @@ int main(int argc, char *argv[])
 			pid_atualiza_referencia(params.TR);
 			control_value = pid_controle(params.TI);
 
+			intensity_pwm = (int) control_value;
+
 			/* Signal control for log */
-			write_modbus(0x01, 0x16, 0xD1, control_value);
+			write_modbus(0x01, 0x16, 0xD1, intensity_pwm);
 
 			/* GPIO */
 			bind_gpio((int) control_value);
-			printf("Control value: %df\n", (int) control_value);
+			printf("Control value: %df\n", intensity_pwm);
+
+			/* Save LOG CSV */
+			save_csv(params.TI, params.TE, params.TR, control_signal);
+	
 		}
 
 		sleep(1);
@@ -97,17 +110,26 @@ void init_setup(){
 	lcd_init();
 
 	/* PID setup */
-    pid_configura_constantes(KP, KI, KD);	
+    pid_configura_constantes(KP, KI, KD);
 
 	/* GPIO setup */
 	init_GPIO();
+
+	/* Init CSV */
+	init_csv()
 
 	usleep(1000000);
 }
 
 void close_connections() {
 	
-	/* close GPIO */
+	/* Close GPIO */
     unbind_gpio();
-    exit(0);
+
+	/* Close Uart Modbus */
+	close_uart_modbus();
+
+	printf("\nSystem Closed.\n");
+    
+	exit(0);
 }
