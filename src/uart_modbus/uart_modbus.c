@@ -46,7 +46,7 @@ void write_modbus(char device_code, char request_code, char subcode, int control
     int tx_length = 9;
 
     if(control_value) {
-        memcpy(&tx_buffer[7], (const void *)&control_value, 4);
+        memcpy(&tx_buffer[9], (const void *)&control_value, 4);
         tx_length = 13;
     }
 
@@ -98,7 +98,9 @@ float read_modbus() {
 
     memcpy(&response, &rx_buffer[3], 4);
 
-    //close(uart0_filestream);
-
     return response;
+}
+
+void close_uart_modbus() {
+    close(uart0_filestream);
 }
