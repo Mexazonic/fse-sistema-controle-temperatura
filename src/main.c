@@ -63,7 +63,8 @@ int main(int argc, char *argv[])
 			control_value = pid_controle(params.TI);
 
 			/* GPIO */
-			bind_gpio(control_value);
+			bind_gpio((int) control_value);
+			printf("Control value: %df\n", (int) control_value);
 		}
 
 		sleep(1);

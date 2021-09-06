@@ -10,8 +10,8 @@
 #include <unistd.h>
 
 /* Variáveis Globais do GPIO */
-#define PWM_PIN_RESISTOR 23
-#define PWM_PIN_AIR_COOLER 24
+#define PWM_PIN_RESISTOR 16
+#define PWM_PIN_AIR_COOLER 18
 
 void init_GPIO()
 {
