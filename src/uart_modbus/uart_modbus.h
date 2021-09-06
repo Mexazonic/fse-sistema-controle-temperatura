@@ -11,10 +11,9 @@
 int uart0_filestream; // filestream
 struct termios options; // uart options
 
-
 typedef struct  {
     float TI, TR, TE;
-    int key;
+    int signal_key;
 } control_vars;
 
 int init_modbus();

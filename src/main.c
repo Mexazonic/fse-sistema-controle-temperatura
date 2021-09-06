@@ -7,7 +7,7 @@
 #include "sensorBME280/bme280.h"
 #include "driver_lcd_16x2/lcd.h"
 #include "uart_modbus/uart_modbus.h"
-#include "pid/pid.h"
+#include "PID/pid.h"
 #include "gpio/gpio.h"
 //#include "control_menu/menu.h"
 
@@ -17,12 +17,6 @@
 #define WIDTH 88
 
 int T, P, H;
-
-typedef struct  {
-    float TI, TR, TE;
-    int signal_key;
-} control_vars;
-
 
 void init_setup();
 void close_connections();
@@ -58,7 +52,7 @@ int main(int argc, char *argv[])
 		params.signal_key = (int) read_modbus();
 
 		/* TI must be at leat equal to TE*/
-		if (params.TI >= params.TE) {
+		if (params.TI > 0 && params.TR > 0 && params.signal_key >= 0) {
 			printf("Leitura %d: te = %3.2f ti. = %3.2f, tr: %3.2f Key: %d\n", i, params.TE, params.TI, params.TR, params.signal_key);
 
 			/* LCD */
