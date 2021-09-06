@@ -83,12 +83,7 @@ float read_modbus() {
     float response;
     
     while (out_crc != 1 && connection_retrial_count < 11)
-    {
-        if(connection_retrial_count > 0){
-            printf("\n Erro na leitura da UART\n");
-            printf("Tentando nova requisão...\n");
-        }
-            
+    {            
         rx_length = read(uart0_filestream, (void *)rx_buffer, 255);
         out_crc = check_crc(&rx_buffer[0], rx_length);
         connection_retrial_count++;
