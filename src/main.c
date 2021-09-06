@@ -12,7 +12,7 @@
 #include "PID/pid.h"
 #include "gpio/gpio.h"
 #include "csv/csv.h"
-//#include "control_menu/menu.h"
+#include "menu/menu.h"
 
 // delay between samples in microseconds
 #define DELAY 1000000
@@ -37,8 +37,9 @@ int main(int argc, char *argv[])
 	/* Initial Setup */
 	init_setup();
 
+	params.signal_key = 5;
 	/* Menu */
-	// menu();
+	//menu(&params);
 
 	/* System loop */
 	for (int i=0; i<50; i++) // read values twice a second for 1 minute
@@ -77,11 +78,10 @@ int main(int argc, char *argv[])
 			write_modbus(0x01, 0x16, 0xD1, intensity_pwm);
 
 			/* GPIO */
-			bind_gpio((int) control_value);
-			printf("Control value: %df\n", intensity_pwm);
+			bind_gpio(intensity_pwm);
 
 			/* Save LOG CSV */
-			save_csv(params.TI, params.TE, params.TR, control_signal);
+			save_csv(params.TI, params.TE, params.TR, control_value);
 	
 		}
 
