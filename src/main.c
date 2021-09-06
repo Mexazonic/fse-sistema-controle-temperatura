@@ -42,14 +42,16 @@ int main(int argc, char *argv[])
 		params.TE = (float)T/100.0;
 
 		/* UART */
-		write_modbus(0x01, 0x23, 0xC1);
+		write_modbus(0x01, 0x23, 0xC1, 0);
 		params.TI = read_modbus();
 
-		write_modbus(0x01, 0x23, 0xC2);
+		write_modbus(0x01, 0x23, 0xC2, 0);
 		params.TR = read_modbus();
 		
-		write_modbus(0x01, 0x23, 0xC3);
+		write_modbus(0x01, 0x23, 0xC3, 0);
 		params.signal_key = (int) read_modbus();
+
+		printf("\nERROR Leitura %d: te = %3.2f ti. = %3.2f, tr: %3.2f Key: %d\n", i, params.TE, params.TI, params.TR, params.signal_key);
 
 		/* TI must be at leat equal to TE*/
 		if (params.TI > 0 && params.TR > 0 && params.signal_key >= 0) {
@@ -61,6 +63,9 @@ int main(int argc, char *argv[])
 			/* PID */
 			pid_atualiza_referencia(params.TR);
 			control_value = pid_controle(params.TI);
+
+			/* Signal control for log */
+			write_modbus(0x01, 0x16, 0xD1, control_value);
 
 			/* GPIO */
 			bind_gpio((int) control_value);

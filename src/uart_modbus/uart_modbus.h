@@ -18,7 +18,7 @@ typedef struct  {
 
 int init_modbus();
 void set_options_modbus();
-void write_modbus(char device_code, char request_code, char subcode);
+void write_modbus(char device_code, char request_code, char subcode, int control_value);
 int check_crc(unsigned char *rx_buffer, int rx_length);
 float read_modbus();
 
