@@ -16,11 +16,7 @@ void init_csv()
 void save_csv(float TI, double TE, float TR, double control_signal)
 {
     FILE *f;
-    fpt = fopen("log_temperature_system.csv", "a");
-
-    time_t rawtime;
-    struct tm *info;
-    char datetime[80];
+    f = fopen("log_temperature_system.csv", "a");
 
     time(&rawtime);
 

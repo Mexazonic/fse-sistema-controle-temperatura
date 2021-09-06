@@ -116,7 +116,7 @@ void init_setup(){
 	init_GPIO();
 
 	/* Init CSV */
-	init_csv()
+	init_csv();
 
 	usleep(1000000);
 }
