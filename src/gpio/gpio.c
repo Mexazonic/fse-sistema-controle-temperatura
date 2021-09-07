@@ -10,8 +10,8 @@
 #include <unistd.h>
 
 /* Variáveis Globais do GPIO */
-#define PWM_PIN_RESISTOR 16
-#define PWM_PIN_AIR_COOLER 18
+#define PWM_PIN_RESISTOR 23
+#define PWM_PIN_AIR_COOLER 24
 
 void init_GPIO()
 {
@@ -24,7 +24,7 @@ void init_GPIO()
     pinMode(PWM_PIN_AIR_COOLER, OUTPUT);
     
     softPwmCreate(PWM_PIN_AIR_COOLER, 1, 100);
-}
+}   
 
 void bind_gpio(int intensity)
 {

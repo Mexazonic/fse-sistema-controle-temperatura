@@ -13,9 +13,9 @@ struct termios options; // uart options
 
 typedef struct  {
     float TI, TR, TE;
-    int signal_key;
+    int signal_key; // on_off || PID from selector key
     float hysteresis;
-    int control_option; // onoff || PID
+    int control_option; // onoff || PID || stdin selection
     int temp_reference_option; // Pontentiometer || stdin
     double KP, KI, KD;
 } control_vars;
