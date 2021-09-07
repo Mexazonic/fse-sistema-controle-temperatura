@@ -95,7 +95,7 @@ int check_crc(unsigned char *rx_buffer, int rx_length)
         memcpy(&crc_from_uart, (const void *)(rx_buffer + 7), 2);
 
         crc_calculated = calcula_CRC(rx_buffer, 7);
-        printf("crc_calc: %d and crc_from_uart: %d\n", crc_calculated, crc_from_uart);
+
         if (crc_calculated == crc_from_uart) {
             return SUCCESS;
         }
