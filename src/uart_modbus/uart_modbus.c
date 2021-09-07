@@ -35,9 +35,9 @@ void set_options_modbus() {
     tcsetattr(uart0_filestream, TCSANOW, &options);
 }
 
-void write_modbus(char device_code, char request_code, char subcode) {
+void get_data_modbus(char device_code, char request_code, char subcode) {
 
-    unsigned char tx_buffer[20] = {device_code, request_code, subcode, 3, 1, 1, 2};
+    unsigned char tx_buffer[20] = {device_code, request_code, subcode, 2, 4, 2, 4};
     
     short crc = calcula_CRC(tx_buffer, 7);
     
@@ -48,6 +48,32 @@ void write_modbus(char device_code, char request_code, char subcode) {
     if (uart0_filestream != -1)
     {
         
+        int count = write(uart0_filestream, &tx_buffer[0], tx_length);
+        
+        if (count < 0)
+        {
+            printf("UART TX error\n");
+        }
+
+        usleep(100000);
+    }
+}
+
+
+void send_data_modbus(char device_code, char request_code, char subcode, int control_value) {
+
+    unsigned char tx_buffer[20] = {device_code, request_code, subcode, 2, 4, 2, 4};
+
+    memcpy(&tx_buffer[7], (const void *)&control_value, 4);
+    
+    short crc = calcula_CRC(tx_buffer, 11);
+    
+    memcpy(&tx_buffer[11], (const void *)&crc, 2);
+
+    int tx_length = 13;
+
+    if (uart0_filestream != -1)
+    {
         int count = write(uart0_filestream, &tx_buffer[0], tx_length);
         
         if (count < 0)
@@ -75,20 +101,20 @@ int check_crc(unsigned char *rx_buffer, int rx_length)
         return ERROR;
     }
     else
-        return 0;
+        return ERROR;
 }
 
 float read_modbus() {
     int rx_length = 0, out_crc = 0;
     unsigned char rx_buffer[256];
-    int connection_retrial_count = 0;
     float response;
     
-    while (out_crc != 1 && connection_retrial_count < 11)
-    {            
-        rx_length = read(uart0_filestream, (void *)rx_buffer, 255);
-        out_crc = check_crc(&rx_buffer[0], rx_length);
-        connection_retrial_count++;
+    rx_length = read(uart0_filestream, (void *)rx_buffer, 255);
+    out_crc = check_crc(&rx_buffer[0], rx_length);
+
+    if(out_crc != 1) {
+        printf("CRC ERROR\n");
+        return -1;
     }
 
     memcpy(&response, &rx_buffer[3], 4);

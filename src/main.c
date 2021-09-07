@@ -10,9 +10,9 @@
 #include "driver_lcd_16x2/lcd.h"
 #include "uart_modbus/uart_modbus.h"
 #include "PID/pid.h"
-#include "gpio/gpio.h"
-#include "csv/csv.h"
-#include "menu/menu.h"
+// #include "gpio/gpio.h"
+// #include "csv/csv.h"
+// #include "menu/menu.h"
 
 // delay between samples in microseconds
 #define DELAY 1000000
@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 	//menu(&params);
 
 	/* System loop */
-	for (int i=0; i<50; i++) // read values twice a second for 1 minute
+	for (int i=0; i<10; i++) // read values twice a second for 1 minute
 	{	
 		// BME280
 		bme280ReadValues(&T, &P, &H);
@@ -49,13 +49,13 @@ int main(int argc, char *argv[])
 		params.TE = (float)T/100.0;
 
 		/* UART */
-		write_modbus(0x01, 0x23, 0xC1);
+		get_data_modbus(0x01, 0x23, 0xC1);
 		params.TI = read_modbus();
 
-		write_modbus(0x01, 0x23, 0xC2);
+		get_data_modbus(0x01, 0x23, 0xC2);
 		params.TR = read_modbus();
 		
-		write_modbus(0x01, 0x23, 0xC3);
+		get_data_modbus(0x01, 0x23, 0xC3);
 		params.signal_key = (int) read_modbus();
 
 		printf("\nERROR Leitura %d: te = %3.2f ti. = %3.2f, tr: %3.2f Key: %d\n", i, params.TE, params.TI, params.TR, params.signal_key);
@@ -72,16 +72,16 @@ int main(int argc, char *argv[])
 			control_value = pid_controle(params.TI);
 
 			intensity_pwm = (int) control_value;
+			printf("PID: %d\n", intensity_pwm);
 
 			/* Signal control for log */
-			//write_modbus(0x01, 0x16, 0xD1, intensity_pwm);
+			send_data_modbus(0x01, 0x16, 0xD1, intensity_pwm);
 
 			/* GPIO */
-			bind_gpio(intensity_pwm);
+			// bind_gpio(intensity_pwm);
 
 			/* Save LOG CSV */
-			save_csv(params.TI, params.TE, params.TR, control_value);
-	
+			// save_csv(params.TI, params.TE, params.TR, control_value);
 		}
 
 		sleep(1);
@@ -109,7 +109,7 @@ void init_setup(){
 	lcd_init();
 
 	/* PID setup */
-    // pid_configura_constantes(KP, KI, KD);
+    pid_configura_constantes(KP, KI, KD);
 
 	// /* GPIO setup */
 	// init_GPIO();
@@ -123,12 +123,10 @@ void init_setup(){
 void close_connections() {
 	
 	/* Close GPIO */
-    //unbind_gpio();
+    // unbind_gpio();
 
 	/* Close Uart Modbus */
 	close_uart_modbus();
 
 	printf("\nSystem Closed.\n");
-    
-	exit(0);
 }
