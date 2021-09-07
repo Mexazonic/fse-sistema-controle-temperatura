@@ -37,7 +37,6 @@ int main(int argc, char *argv[])
 	/* Initial Setup */
 	init_setup();
 
-	params.signal_key = 5;
 	/* Menu */
 	//menu(&params);
 
@@ -50,13 +49,13 @@ int main(int argc, char *argv[])
 		params.TE = (float)T/100.0;
 
 		/* UART */
-		write_modbus(0x01, 0x23, 0xC1, 0);
+		write_modbus(0x01, 0x23, 0xC1);
 		params.TI = read_modbus();
 
-		write_modbus(0x01, 0x23, 0xC2, 0);
+		write_modbus(0x01, 0x23, 0xC2);
 		params.TR = read_modbus();
 		
-		write_modbus(0x01, 0x23, 0xC3, 0);
+		write_modbus(0x01, 0x23, 0xC3);
 		params.signal_key = (int) read_modbus();
 
 		printf("\nERROR Leitura %d: te = %3.2f ti. = %3.2f, tr: %3.2f Key: %d\n", i, params.TE, params.TI, params.TR, params.signal_key);
@@ -75,7 +74,7 @@ int main(int argc, char *argv[])
 			intensity_pwm = (int) control_value;
 
 			/* Signal control for log */
-			write_modbus(0x01, 0x16, 0xD1, intensity_pwm);
+			//write_modbus(0x01, 0x16, 0xD1, intensity_pwm);
 
 			/* GPIO */
 			bind_gpio(intensity_pwm);
@@ -110,13 +109,13 @@ void init_setup(){
 	lcd_init();
 
 	/* PID setup */
-    pid_configura_constantes(KP, KI, KD);
+    // pid_configura_constantes(KP, KI, KD);
 
-	/* GPIO setup */
-	init_GPIO();
+	// /* GPIO setup */
+	// init_GPIO();
 
-	/* Init CSV */
-	init_csv();
+	// /* Init CSV */
+	// init_csv();
 
 	usleep(1000000);
 }
@@ -124,7 +123,7 @@ void init_setup(){
 void close_connections() {
 	
 	/* Close GPIO */
-    unbind_gpio();
+    //unbind_gpio();
 
 	/* Close Uart Modbus */
 	close_uart_modbus();

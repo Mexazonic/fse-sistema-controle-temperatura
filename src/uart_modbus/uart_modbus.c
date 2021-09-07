@@ -35,7 +35,7 @@ void set_options_modbus() {
     tcsetattr(uart0_filestream, TCSANOW, &options);
 }
 
-void write_modbus(char device_code, char request_code, char subcode, int control_value) {
+void write_modbus(char device_code, char request_code, char subcode) {
 
     unsigned char tx_buffer[20] = {device_code, request_code, subcode, 3, 1, 1, 2};
     
@@ -44,11 +44,6 @@ void write_modbus(char device_code, char request_code, char subcode, int control
     memcpy(&tx_buffer[7], (const void *)&crc, 2);
 
     int tx_length = 9;
-
-    if(control_value) {
-        memcpy(&tx_buffer[9], (const void *)&control_value, 4);
-        tx_length = 13;
-    }
 
     if (uart0_filestream != -1)
     {
