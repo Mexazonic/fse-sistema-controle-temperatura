@@ -10,6 +10,7 @@
 
 int uart0_filestream; // filestream
 struct termios options; // uart options
+short crc_sended;
 
 typedef struct  {
     float TI, TR, TE;

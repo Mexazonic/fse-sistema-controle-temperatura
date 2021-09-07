@@ -40,6 +40,8 @@ void get_data_modbus(char device_code, char request_code, char subcode) {
     unsigned char tx_buffer[20] = {device_code, request_code, subcode, 2, 4, 2, 4};
     
     short crc = calcula_CRC(tx_buffer, 7);
+
+    crc_sended = crc;
     
     memcpy(&tx_buffer[7], (const void *)&crc, 2);
 
@@ -87,14 +89,14 @@ void send_data_modbus(char device_code, char request_code, char subcode, int con
 
 int check_crc(unsigned char *rx_buffer, int rx_length)
 {
-    short crc_calculated, crc_from_uart;
+    short crc_from_uart;
 
     if (rx_length > 0)
     {
         memcpy(&crc_from_uart, (const void *)(rx_buffer + 7), 2);
 
-        crc_calculated = calcula_CRC(rx_buffer, 7);
-        if (crc_calculated == crc_from_uart) {
+        //crc_calculated = calcula_CRC(rx_buffer, 7);
+        if (crc_sended == crc_from_uart) {
             return SUCCESS;
         }
         
