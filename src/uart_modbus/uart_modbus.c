@@ -37,7 +37,7 @@ void set_options_modbus() {
 
 void get_data_modbus(char device_code, char request_code, char subcode) {
 
-    unsigned char tx_buffer[20] = {device_code, request_code, subcode, 2, 4, 2, 4};
+    unsigned char tx_buffer[20] = {device_code, request_code, subcode, 3, 1, 1, 2};
     
     short crc = calcula_CRC(tx_buffer, 7);
     
@@ -62,7 +62,7 @@ void get_data_modbus(char device_code, char request_code, char subcode) {
 
 void send_data_modbus(char device_code, char request_code, char subcode, int control_value) {
 
-    unsigned char tx_buffer[20] = {device_code, request_code, subcode, 2, 4, 2, 4};
+    unsigned char tx_buffer[20] = {device_code, request_code, subcode, 3, 1, 1, 2};
 
     memcpy(&tx_buffer[7], (const void *)&control_value, 4);
     

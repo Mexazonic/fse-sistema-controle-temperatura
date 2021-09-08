@@ -1,17 +1,4 @@
-/*
-  Control Intensity of LED using PWM on Raspberry pi
-  http://www.electronicwings.com
- */
-
-#include <wiringPi.h> //Used for GPIO
-#include <softPwm.h>  //Used for GPIO
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-
-/* Variáveis Globais do GPIO */
-#define PWM_PIN_RESISTOR 23
-#define PWM_PIN_AIR_COOLER 24
+#include "gpio.h"
 
 void init_GPIO()
 {
@@ -19,11 +6,11 @@ void init_GPIO()
 
     pinMode(PWM_PIN_RESISTOR, OUTPUT);
     
-    softPwmCreate(PWM_PIN_RESISTOR, 1, 100);
+    softPwmCreate(PWM_PIN_RESISTOR, MIN_INTENSITY, MAX_INTENSITY);
     
     pinMode(PWM_PIN_AIR_COOLER, OUTPUT);
     
-    softPwmCreate(PWM_PIN_AIR_COOLER, 1, 100);
+    softPwmCreate(PWM_PIN_AIR_COOLER, MIN_INTENSITY,MAX_INTENSITY);
 }   
 
 void bind_gpio(int intensity)
@@ -34,7 +21,7 @@ void bind_gpio(int intensity)
         
         softPwmWrite(PWM_PIN_RESISTOR, abs(intensity));
     }
-    else if (intensity <= -40)
+    else if (intensity <= MIN_AIR_COOLER_INTENSITY)
     {
         softPwmWrite(PWM_PIN_RESISTOR, 0);
         
@@ -52,9 +39,9 @@ void unbind_gpio()
 {
     softPwmWrite(PWM_PIN_AIR_COOLER, 0);
     
-    usleep(500000);
+    usleep(DELAY_5);
 
     softPwmWrite(PWM_PIN_RESISTOR, 0);
     
-    usleep(500000);
+    usleep(DELAY_5);
 }

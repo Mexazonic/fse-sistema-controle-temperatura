@@ -6,7 +6,7 @@
 #include <fcntl.h>          //Used for UART
 #include <termios.h>        //Used for UART
 #include <string.h>
-#include "crc16/crc16.h"
+#include "../crc16/crc16.h"
 
 int uart0_filestream; // filestream
 struct termios options; // uart options
