@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
 	if(params.control_option == 3) {
 		get_data_modbus(0x01, 0x23, 0xC3);
 		params.signal_key = (int) read_modbus();
-	}
+	}	
 
 	/* System loop */
 	for (int i=0; i<10; i++) // read values twice a second for 1 minute
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 
 		/* TI must be at leat equal to TE*/
 		if (params.TI > 0 && params.TR > 0) {
-			// printf("Leitura %d: te = %3.2f ti. = %3.2f, tr: %3.2f Key: %d\n", i, params.TE, params.TI, params.TR, params.signal_key);
+			printf("Leitura %d: te = %3.2f ti. = %3.2f, tr: %3.2f Key: %d\n", i, params.TE, params.TI, params.TR, params.signal_key);
 
 			/* LCD */
 			lcd_write_tmp(params.TE, params.TI, params.TR);
