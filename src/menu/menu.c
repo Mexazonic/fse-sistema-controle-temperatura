@@ -74,7 +74,7 @@ void temp_reference_menu(control_vars *params) {
 
     switch(temp_reference_option) {
         case 1:
-            printf("\nPotenciomtro selecionado.\n\n");
+            printf("\nPotenciometro selecionado.\n\n");
             break;
         case 2:
             printf("\nDigite a Temp. de referencia:");
