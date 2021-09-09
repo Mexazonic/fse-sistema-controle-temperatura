@@ -49,7 +49,7 @@ Nesse exemplo é:
 
 Todos os módulos solicitados foram impletados. No entanto, devido a um problema em utilizar a GPIO, não foi possível realizar os experimentos. Entretanto, a utilização da UART, sensor BME e escrita no LCD foram executadas com sucesso. O trecho de chamada da função GPIO está comentado na main para evitar problemas na rasp na execução do makefile.
 
-O csv gerado é ilustrativo para demonstrar a utilização do módulo "csv" e representa dados genéricos.
+O csv foi gerado com os valores de leitura dos sensores e o sinal do controle sempre foi 100. Uma vez que não foi conseguido acionar o resistor pelo GPIO e a temperatura interna se manteve praticamente constante.
 
 ## Referências
 

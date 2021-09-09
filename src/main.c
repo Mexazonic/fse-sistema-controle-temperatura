@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 
 		/* TI must be at leat equal to TE*/
 		if (params.TI > 0 && params.TR > 0) {
-			printf("Leitura %d: te = %3.2f ti. = %3.2f, tr: %3.2f Key: %d\n", i, params.TE, params.TI, params.TR, params.signal_key);
+			printf("\nLeitura %d: te = %3.2f ti. = %3.2f, tr: %3.2f Key: %d\n", i, params.TE, params.TI, params.TR, params.signal_key);
 
 			/* LCD */
 			lcd_write_tmp(params.TE, params.TI, params.TR);
