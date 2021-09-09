@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 		params.TR = read_modbus();
 
 		/* TI must be at leat equal to TE*/
-		if (params.TI > 0 && params.TR > 0) {
+		if (params.TI >= params.TE && params.TR >= params.TE) {
 			printf("\nLeitura %d: te = %3.2f ti. = %3.2f, tr: %3.2f Key: %d\n", i, params.TE, params.TI, params.TR, params.signal_key);
 
 			/* LCD */
