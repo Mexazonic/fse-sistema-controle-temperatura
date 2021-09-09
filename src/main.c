@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
 	}	
 
 	/* System loop */
-	for (int i=0; i<10; i++) // read values twice a second for 1 minute
+	for (int i=0; i<20; i++) // read values twice a second for 1 minute
 	{	
 		// BME280
 		bme280ReadValues(&T, &P, &H);

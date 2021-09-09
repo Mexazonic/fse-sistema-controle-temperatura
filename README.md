@@ -47,7 +47,7 @@ Nesse exemplo é:
 
 ## Resultados e discussões
 
-Todos os módulos solicitados foram impletados. No entanto, devido a um problema em utilizar a GPIO (Estava desconfigurando a RASP de alguma forma), não foi possível realizar os experimentos. Entretanto, a utilização da UART, sensor BME e escrita no LCD foram executadas com sucesso. O trecho de chamada da função GPIO está comentado na main para evitar problemas na rasp na execução do makefile.
+Todos os módulos solicitados foram impletados. No entanto, devido a um problema em utilizar a GPIO, não foi possível realizar os experimentos. Entretanto, a utilização da UART, sensor BME e escrita no LCD foram executadas com sucesso. O trecho de chamada da função GPIO está comentado na main para evitar problemas na rasp na execução do makefile.
 
 O csv gerado é ilustrativo para demonstrar a utilização do módulo "csv" e representa dados genéricos.
 
