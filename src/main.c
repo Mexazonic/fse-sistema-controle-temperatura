@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
 			send_data_modbus(0x01, 0x16, 0xD1, intensity_pwm);
 
 			/* GPIO */
-			// bind_gpio(intensity_pwm);
+			bind_gpio(intensity_pwm);
 
 			/* Save LOG CSV */
 			save_csv(params.TI, params.TE, params.TR, control_value);
@@ -121,7 +121,7 @@ void init_setup(control_vars *params){
 	on_off_setup(params->hysteresis);
 
 	/* GPIO setup */
-	//init_GPIO();
+	init_GPIO();
 
 	/* Init CSV */
 	init_csv();
@@ -132,7 +132,7 @@ void init_setup(control_vars *params){
 void close_connections() {
 	
 	/* Close GPIO */
-    //unbind_gpio();
+    unbind_gpio();
 
 	/* Close Uart Modbus */
 	close_uart_modbus();
